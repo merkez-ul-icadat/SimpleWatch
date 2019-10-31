@@ -14,6 +14,10 @@ install:
   - arduino --install-library "DHT sensor library:1.3.7,Adafruit Unified Sensor:1.0.2,TheThingsNetwork:2.5.16,TheThingsNode:2.0.7"
   - git clone https://github.com/sparkfun/arduino_boards /tmp/sparkfun
   - mv /tmp/sparkfun/sparkfun /usr/local/share/arduino/hardware/sparkfun
+  - mkdir 
+  - wget https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/archive/master.zip
+  - unzip master.zip -d temp
+  - mv temp /usr/local/share/arduino/libraries/TTGO_TWatch_Library
 script:
   - arduino --verify --board sparkfun:avr:promicro:cpu=8MHzatmega32U4 thethingsnode.ino
 notifications:
