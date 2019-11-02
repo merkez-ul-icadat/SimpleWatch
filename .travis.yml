@@ -1,22 +1,15 @@
-language: c
-env:
-  - ARDUINO_VERSION=1.8.10
+language: generic
 before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
-  - sleep 3
-  - export DISPLAY=:1.0
-  - wget http://downloads.arduino.cc/arduino-$ARDUINO_VERSION-linux64.tar.xz
-  - tar xf arduino-$ARDUINO_VERSION-linux64.tar.xz
-  - sudo mv arduino-$ARDUINO_VERSION /usr/local/share/arduino
-  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - curl http://downloads.arduino.cc/arduino-cli/arduino-cli-latest-linux64.tar.bz2 | tar xj
+  - mkdir -p $HOME/bin
+  - mv arduino-cli $HOME/bin/arduino-cli
+  - export PATH=$PATH:$HOME/bin
+  - printf "board_manager:\n  additional_urls:\n    - https://dl.espressif.com/dl/package_esp32_index.json\n" > .arduino-cli.yaml
+  - arduino-cli core update-index --config-file .arduino-cli.yaml
+  - arduino-cli core install esp32:esp32 --config-file .arduino-cli.yaml
 install:
-  - wget https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/archive/master.zip
-  - unzip master.zip -d temp
-  - mv temp /usr/local/share/arduino/libraries/TTGO_TWatch_Library
-  - arduino --install-library "TTGO T-Watch"
+  - mkdir -p $HOME/Arduino/libraries
+  - git clone https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library.git $HOME/Arduino/libraries/TTGO_TWatch_Library
+  - ln -s $PWD $HOME/Arduino/libraries/.
 script:
-  - arduino --verify --board sparkfun:avr:promicro:cpu=8MHzatmega32U4 thethingsnode.ino # this should be changed
-notifications:
-  email:
-    on_success: change
-    on_failure: change
+  - arduino-cli compile -b esp32:esp32:ttgo-t-watch SimpleWatch.ino
