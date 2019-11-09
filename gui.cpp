@@ -1,12 +1,11 @@
 /*
 Copyright (c) 2019 lewis he
 This is just a demonstration. Most of the functions are not implemented.
-The main implementation is low-power standby. 
+The main implementation is low-power standby.
 The off-screen standby (not deep sleep) current is about 4mA.
 Select standard motherboard and standard backplane for testing.
 Created by Lewis he on October 10, 2019.
 */
-
 #include <TTGO.h>
 #include <Arduino.h>
 #include <time.h>
@@ -18,7 +17,6 @@ Created by Lewis he on October 10, 2019.
 #include "SD.h"
 
 #define RTC_TIME_ZONE   "CST-8"
-
 
 LV_FONT_DECLARE(Geometr);
 LV_FONT_DECLARE(Ubuntu);
@@ -186,8 +184,6 @@ private:
     const int8_t iconOffset = -5;
 };
 
-
-
 class MenuBar
 {
 public:
@@ -220,7 +216,6 @@ public:
         menuStyle.body.border.opa = LV_OPA_50;
         menuStyle.text.color = LV_COLOR_WHITE;
         menuStyle.image.color = LV_COLOR_WHITE;
-
 
         _count = count;
 
@@ -264,7 +259,6 @@ public:
             lv_obj_t *label = lv_label_create(_obj[i], NULL);
             lv_label_set_text(label, config[i].name);
             lv_obj_align(label, img, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
-
 
             i == 0 ? lv_obj_align(_obj[i], NULL, LV_ALIGN_CENTER, 0, 0) : lv_obj_align(_obj[i], _obj[i - 1], direction ? LV_ALIGN_OUT_BOTTOM_MID : LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
@@ -316,7 +310,6 @@ MenuBar::lv_menu_config_t _cfg[7] = {
     {.name = "Camera",  .img = (void *) &CAMERA_PNG, /*.event_cb = camera_event_cb*/ }
 };
 
-
 MenuBar menuBars;
 StatusBar bar;
 
@@ -335,7 +328,6 @@ static void event_handler(lv_obj_t *obj, lv_event_t event)
         }
     }
 }
-
 
 void setupGui()
 {
@@ -455,7 +447,6 @@ void updateBatteryIcon(lv_icon_battery_t icon)
     bar.updateBatteryIcon(icon);
 }
 
-
 static void lv_update_task(struct _lv_task_t *data)
 {
     updateTime();
@@ -488,12 +479,8 @@ static void view_event_handler(lv_obj_t *obj, lv_event_t event)
 }
 
 /*****************************************************************
- *
  *          ! Keyboard Class
- *
  */
-
-
 class Keyboard
 {
 public:
@@ -679,12 +666,8 @@ const char *Keyboard::btnm_mapplus[10][23] = {
         LV_SYMBOL_OK, "Del", "Exit", LV_SYMBOL_RIGHT, ""
     }
 };
-
-
 /*****************************************************************
- *
  *          ! Switch Class
- *
  */
 class Switch
 {
@@ -826,12 +809,8 @@ private:
 };
 
 Switch *Switch::_switch = nullptr;
-
-
 /*****************************************************************
- *
  *          ! Preload Class
- *
  */
 class Preload
 {
@@ -895,14 +874,9 @@ public:
 private:
     lv_obj_t *_preloadCont = nullptr;
 };
-
-
 /*****************************************************************
- *
  *          ! List Class
- *
  */
-
 class List
 {
 public:
@@ -979,9 +953,7 @@ private:
 List *List::_list = nullptr;
 
 /*****************************************************************
- *
  *          ! Task Class
- *
  */
 class Task
 {
@@ -1009,13 +981,9 @@ private:
     lv_task_t *_handler = nullptr;
     lv_task_cb_t _cb = nullptr;
 };
-
 /*****************************************************************
- *
  *          ! MesBox Class
- *
  */
-
 class MBox
 {
 public:
@@ -1065,14 +1033,8 @@ public:
 private:
     lv_obj_t *_mbox = nullptr;
 };
-
-
-
-
 /*****************************************************************
- *
  *          ! GLOBAL VALUE
- *
  */
 static Keyboard *kb = nullptr;
 static Switch *sw = nullptr;
@@ -1083,11 +1045,8 @@ static Ticker *gTicker = nullptr;
 static MBox *mbox = nullptr;
 
 static char ssid[64], password[64];
-
 /*****************************************************************
- *
  *          !WIFI EVENT
- *
  */
 void wifi_connect_status(bool result)
 {
@@ -1114,7 +1073,6 @@ void wifi_connect_status(bool result)
     }
     menuBars.hidden(false);
 }
-
 
 void wifi_kb_event_cb(Keyboard::kb_event_t event)
 {
@@ -1192,9 +1150,6 @@ static void wifi_sync_mbox_cb(lv_task_t *t)
     }
 }
 
-
-
-
 void wifi_sw_event_cb(uint8_t index, bool en)
 {
     switch (index) {
@@ -1260,7 +1215,6 @@ void wifi_list_add(const char *ssid)
     list->add(ssid);
 }
 
-
 static void wifi_event_cb()
 {
     Switch::switch_cfg_t cfg[3] = {{"Switch", wifi_sw_event_cb}, {"Scan", wifi_sw_event_cb}, {"NTP Sync", wifi_sw_event_cb}};
@@ -1273,7 +1227,6 @@ static void wifi_event_cb()
     sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
     sw->setStatus(0, WiFi.isConnected());
 }
-
 
 static void wifi_destory()
 {
@@ -1328,24 +1281,15 @@ static void wifi_destory()
     }
     globalIndex--;
 }
-
-
 /*****************************************************************
- *
  *          !SETTING EVENT
- *
  */
 static void setting_event_cb()
 {
 
-
 }
-
-
 /*****************************************************************
- *
  *          ! LIGHT EVENT
- *
  */
 static void light_sw_event_cb(uint8_t index, bool en)
 {
@@ -1375,12 +1319,8 @@ static void light_event_cb()
         sw->setStatus(i, 0);
     }
 }
-
-
 /*****************************************************************
- *
  *          ! MBOX EVENT
- *
  */
 static lv_obj_t *mbox1 = nullptr;
 
@@ -1413,33 +1353,24 @@ static void destory_mbox()
 }
 
 /*****************************************************************
- *
  *          ! SD CARD EVENT
- *
  */
-
 static void sd_event_cb()
 {
- 
+
 }
 
 /*****************************************************************
-*
  *          ! Modules EVENT
- *
  */
 static void modules_event_cb()
 {
 
 }
 
-
 /*****************************************************************
-*
  *          ! Camera EVENT
- *
  */
-
 static void camera_event_cb()
 {
 
