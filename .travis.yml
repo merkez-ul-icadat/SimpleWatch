@@ -19,4 +19,4 @@ notifications:
       - merkez-ul-icadat@protonmail.com
     on_success: change # default: change
     on_failure: always # default: always    
-  slack: merkez-ul-icadat:lDvOOf5bILddEQCvzwOegVeh
+  slack: merkez-ul-icadat:lDvOOf5bILddEQCvzwOegVeh#smartwatch-app
