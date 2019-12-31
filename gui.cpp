@@ -42,7 +42,6 @@ LV_IMG_DECLARE(level2);
 LV_IMG_DECLARE(level3);
 LV_IMG_DECLARE(iexit);
 LV_IMG_DECLARE(modules);
-LV_IMG_DECLARE(CAMERA_PNG);
 
 extern EventGroupHandle_t g_event_group;
 extern QueueHandle_t g_event_queue_handle;
@@ -65,7 +64,6 @@ static void setting_event_cb();
 static void light_event_cb();
 static void bluetooth_event_cb();
 static void modules_event_cb();
-static void camera_event_cb();
 static void wifi_destory();
 
 class StatusBar
@@ -300,14 +298,13 @@ private:
     int _count = 0;
 };
 
-MenuBar::lv_menu_config_t _cfg[7] = {
+MenuBar::lv_menu_config_t _cfg[6] = {
     {.name = "WiFi",  .img = (void *) &wifi, .event_cb = wifi_event_cb},
     {.name = "Bluetooth",  .img = (void *) &bluetooth, /*.event_cb = bluetooth_event_cb*/},
     {.name = "SD Card",  .img = (void *) &sd,  /*.event_cb =sd_event_cb*/},
     {.name = "Light",  .img = (void *) &light, /*.event_cb = light_event_cb*/},
     {.name = "Setting",  .img = (void *) &setting, /*.event_cb = setting_event_cb */},
-    {.name = "Modules",  .img = (void *) &modules, /*.event_cb = modules_event_cb */},
-    {.name = "Camera",  .img = (void *) &CAMERA_PNG, /*.event_cb = camera_event_cb*/ }
+    {.name = "Modules",  .img = (void *) &modules, /*.event_cb = modules_event_cb */}
 };
 
 MenuBar menuBars;
@@ -1364,14 +1361,6 @@ static void sd_event_cb()
  *          ! Modules EVENT
  */
 static void modules_event_cb()
-{
-
-}
-
-/*****************************************************************
- *          ! Camera EVENT
- */
-static void camera_event_cb()
 {
 
 }
