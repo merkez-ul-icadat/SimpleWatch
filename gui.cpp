@@ -16,7 +16,7 @@ Created by Lewis he on October 10, 2019.
 #include "FS.h"
 #include "SD.h"
 
-#define RTC_TIME_ZONE   "CST-8"
+#define RTC_TIME_ZONE   "CET+1"
 
 LV_FONT_DECLARE(Geometr);
 LV_FONT_DECLARE(Ubuntu);
@@ -61,9 +61,11 @@ static void view_event_handler(lv_obj_t *obj, lv_event_t event);
 static void wifi_event_cb();
 static void sd_event_cb();
 static void setting_event_cb();
-static void light_event_cb();
 static void bluetooth_event_cb();
 static void modules_event_cb();
+static void gps_event_cb();
+static void lora_event_cb();
+static void hackerspace_event_cb();
 static void wifi_destory();
 
 class StatusBar
@@ -298,13 +300,15 @@ private:
     int _count = 0;
 };
 
-MenuBar::lv_menu_config_t _cfg[6] = {
+MenuBar::lv_menu_config_t _cfg[8] = {
+    {.name = "Hackerspace", .img = (void *) &modules, .event_cb = hackerspace_event_cb },
     {.name = "WiFi",  .img = (void *) &wifi, .event_cb = wifi_event_cb},
     {.name = "Bluetooth",  .img = (void *) &bluetooth, /*.event_cb = bluetooth_event_cb*/},
     {.name = "SD Card",  .img = (void *) &sd,  /*.event_cb =sd_event_cb*/},
-    {.name = "Light",  .img = (void *) &light, /*.event_cb = light_event_cb*/},
     {.name = "Setting",  .img = (void *) &setting, /*.event_cb = setting_event_cb */},
-    {.name = "Modules",  .img = (void *) &modules, /*.event_cb = modules_event_cb */}
+    {.name = "Modules",  .img = (void *) &modules, /*.event_cb = modules_event_cb */},
+    {.name = "GPS",  .img = (void *) &modules, .event_cb = gps_event_cb },
+    {.name = "LoRa",  .img = (void *) &modules, .event_cb = lora_event_cb }
 };
 
 MenuBar menuBars;
@@ -1285,37 +1289,7 @@ static void setting_event_cb()
 {
 
 }
-/*****************************************************************
- *          ! LIGHT EVENT
- */
-static void light_sw_event_cb(uint8_t index, bool en)
-{
-    //Add lights that need to be controlled
-}
 
-static void light_event_cb()
-{
-    const uint8_t cfg_count = 4;
-    Switch::switch_cfg_t cfg[cfg_count] = {
-        {"light1", light_sw_event_cb},
-        {"light2", light_sw_event_cb},
-        {"light3", light_sw_event_cb},
-        {"light4", light_sw_event_cb},
-    };
-    sw = new Switch;
-    sw->create(cfg, cfg_count, []() {
-        delete sw;
-        sw = nullptr;
-        menuBars.hidden(false);
-    });
-
-    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
-
-    //Initialize switch status
-    for (int i = 0; i < cfg_count; i++) {
-        sw->setStatus(i, 0);
-    }
-}
 /*****************************************************************
  *          ! MBOX EVENT
  */
@@ -1361,6 +1335,30 @@ static void sd_event_cb()
  *          ! Modules EVENT
  */
 static void modules_event_cb()
+{
+
+}
+
+/*****************************************************************
+ *          ! GPS EVENT
+ */
+static void gps_event_cb()
+{
+
+}
+
+/*****************************************************************
+ *          ! Lora EVENT
+ */
+static void lora_event_cb()
+{
+
+}
+
+/*****************************************************************
+ *          ! Hackerspace EVENT
+ */
+static void hackerspace_event_cb()
 {
 
 }
