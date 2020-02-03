@@ -301,14 +301,14 @@ private:
 };
 
 MenuBar::lv_menu_config_t _cfg[8] = {
-    {.name = "Hackerspace", .img = (void *) &modules, .event_cb = hackerspace_event_cb },
-    {.name = "WiFi",  .img = (void *) &wifi, .event_cb = wifi_event_cb},
-    {.name = "Bluetooth",  .img = (void *) &bluetooth, /*.event_cb = bluetooth_event_cb*/},
-    {.name = "SD Card",  .img = (void *) &sd,  /*.event_cb =sd_event_cb*/},
-    {.name = "Setting",  .img = (void *) &setting, /*.event_cb = setting_event_cb */},
-    {.name = "Modules",  .img = (void *) &modules, /*.event_cb = modules_event_cb */},
-    {.name = "GPS",  .img = (void *) &modules, .event_cb = gps_event_cb },
-    {.name = "LoRa",  .img = (void *) &modules, .event_cb = lora_event_cb }
+    {.name = "Hackerspace", .img = (void *) &modules, .event_cb = hackerspace_event_cb},
+    {.name = "WiFi", .img = (void *) &wifi, .event_cb = wifi_event_cb},
+    {.name = "Bluetooth", .img = (void *) &bluetooth, .event_cb = bluetooth_event_cb},
+    {.name = "SD Card", .img = (void *) &sd, .event_cb =sd_event_cb},
+    {.name = "Setting", .img = (void *) &setting, .event_cb = setting_event_cb},
+    {.name = "Modules", .img = (void *) &modules, .event_cb = modules_event_cb},
+    {.name = "GPS", .img = (void *) &modules, .event_cb = gps_event_cb},
+    {.name = "LoRa", .img = (void *) &modules, .event_cb = lora_event_cb}
 };
 
 MenuBar menuBars;
@@ -1046,6 +1046,38 @@ static Ticker *gTicker = nullptr;
 static MBox *mbox = nullptr;
 
 static char ssid[64], password[64];
+
+/*****************************************************************
+ *          ! Hackerspace EVENT
+ */
+
+void hackerspace_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //TTNMapper(start);
+        } else {
+           //TTNMapper(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+static void hackerspace_event_cb()
+{
+    Switch::switch_cfg_t cfg[1] = {{"TTNMapper", hackerspace_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 1, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
+
 /*****************************************************************
  *          !WIFI EVENT
  */
@@ -1282,12 +1314,180 @@ static void wifi_destory()
     }
     globalIndex--;
 }
+
+/*****************************************************************
+ *          !BLUETOOTH EVENT
+ */
+void bluetooth_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //Bluetooth(start);
+        } else {
+           //Bluetooth(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+static void bluetooth_event_cb()
+{
+    Switch::switch_cfg_t cfg[1] = {{"Bluetooth", bluetooth_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 1, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
+
+/*****************************************************************
+ *          ! SD CARD EVENT
+ */
+void sd_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //SD(start);
+        } else {
+           //SD(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+static void sd_event_cb()
+{
+      Switch::switch_cfg_t cfg[1] = {{"Switch", sd_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 1, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
+
 /*****************************************************************
  *          !SETTING EVENT
  */
+void setting_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //setting(start);
+        } else {
+           //settings(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
 static void setting_event_cb()
 {
+      Switch::switch_cfg_t cfg[3] = {{"Switch", setting_sw_event_cb}, {"Scan", setting_sw_event_cb}, {"NTP Sync", setting_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 3, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
 
+/*****************************************************************
+ *          ! Modules EVENT
+ */
+void modules_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //Modules(start);
+        } else {
+           //Modules(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+static void modules_event_cb()
+{
+      Switch::switch_cfg_t cfg[3] = {{"Switch", modules_sw_event_cb}, {"Scan", modules_sw_event_cb}, {"NTP Sync", modules_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 3, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
+
+/*****************************************************************
+ *          ! GPS EVENT
+ */
+void gps_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //Bluetooth(start);
+        } else {
+           //Bluetooth(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+static void gps_event_cb()
+{
+      Switch::switch_cfg_t cfg[3] = {{"Switch", gps_sw_event_cb}, {"Scan", gps_sw_event_cb}, {"NTP Sync", gps_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 3, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+}
+
+/*****************************************************************
+ *          ! Lora EVENT
+ */
+void lora_sw_event_cb(uint8_t index, bool en)
+{
+    switch (index) {
+    case 0:
+        if (en) {
+            //LoRa(start);
+        } else {
+           //LoRa(stop);
+        }
+        break;
+    default:
+        break;
+    }
+}
+static void lora_event_cb()
+{
+      Switch::switch_cfg_t cfg[3] = {{"Switch", lora_sw_event_cb}, {"Scan", lora_sw_event_cb}, {"NTP Sync", lora_sw_event_cb}};
+    sw = new Switch;
+    sw->create(cfg, 3, []() {
+        delete sw;
+        sw = nullptr;
+        menuBars.hidden(false);
+    });
+    sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
 }
 
 /*****************************************************************
@@ -1321,44 +1521,4 @@ static void destory_mbox()
         lv_obj_del(mbox1);
         mbox1 = nullptr;
     }
-}
-
-/*****************************************************************
- *          ! SD CARD EVENT
- */
-static void sd_event_cb()
-{
-
-}
-
-/*****************************************************************
- *          ! Modules EVENT
- */
-static void modules_event_cb()
-{
-
-}
-
-/*****************************************************************
- *          ! GPS EVENT
- */
-static void gps_event_cb()
-{
-
-}
-
-/*****************************************************************
- *          ! Lora EVENT
- */
-static void lora_event_cb()
-{
-
-}
-
-/*****************************************************************
- *          ! Hackerspace EVENT
- */
-static void hackerspace_event_cb()
-{
-
 }
