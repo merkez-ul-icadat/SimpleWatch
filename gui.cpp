@@ -11,6 +11,7 @@
 #include <time.h>
 #include "gui.h"
 #include <WiFi.h>
+#include "gps.h"
 #include "string.h"
 #include <Ticker.h>
 #include "FS.h"
@@ -1447,7 +1448,8 @@ static void gps_info_mbox_cb(lv_task_t *t)
         //!sync to rtc
         //struct tm *info =  (struct tm *)mbox->getData();
         //Serial.printf("read use data = %d:%d:%d - %d:%d:%d \n", info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
-
+	GPSLocation gps = gps_location();
+	Serial.printf("lat = %d, long=%d\n", gps.latitude, gps.longitude);
         //TTGOClass *ttgo = TTGOClass::getWatch();
         //ttgo->rtc->setDateTime(info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
       }
@@ -1467,7 +1469,7 @@ void gps_sw_event_cb(uint8_t index, bool en)
   switch (index) {
     case 0:
       if (en) {
-        //GPS(start);
+        gps_start();
         
         if (task != nullptr) {
           Serial.println("task is runing ...");
@@ -1479,8 +1481,9 @@ void gps_sw_event_cb(uint8_t index, bool en)
         pl = new Preload;
         pl->create();
         pl->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
+	
       } else {
-        //GPS(stop);
+        gps_stop();
       }
       break;
     default:
