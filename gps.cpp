@@ -1,13 +1,12 @@
 #include "gps.h"
 #include <TTGO.h>
 
-bool gps_enabled = false;
-S7XG_Class *s7xg;
-TTGOClass *ttgo = TTGOClass::getWatch();
-TinyGPSPlus *gps;
-char buff[256];
+static bool gps_enabled = false;
+static S7XG_Class *s7xg;
+static TTGOClass *ttgo = TTGOClass::getWatch();
+static TinyGPSPlus *gps;
 
-static void gps_start()
+void gps_start()
 {
   gps_enabled = true;
   
@@ -49,7 +48,7 @@ static void gps_start()
   ttgo->gps_begin();
 }
 
-static GPSLocation gps_location()
+GPSLocation gps_location()
 {
   GPS_Class gps =  s7xg->gpsGetData();
   GPSLocation location;
@@ -63,7 +62,7 @@ static GPSLocation gps_location()
   return location;
 }
 
-static void gps_stop()
+void gps_stop()
 {
   gps_enabled = false;
 }
