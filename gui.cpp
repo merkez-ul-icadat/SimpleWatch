@@ -1432,8 +1432,10 @@ static void gps_info_mbox_cb(lv_task_t *t)
   pl = nullptr;
 
   char format[256];
-  snprintf(format, sizeof(format), "GPS location is:%d-%d-%d/%d:%d:%d?", 0, 0, 0, 0, 0, 0);
-  //Serial.println(format);
+  GPSLocation gps = gps_location();
+  
+  snprintf(format, sizeof(format), "GPS location is: %d, %d", gps.latitude, gps.longitude);
+  Serial.println(format);
   delete task;
   task = nullptr;
 
@@ -1448,8 +1450,6 @@ static void gps_info_mbox_cb(lv_task_t *t)
         //!sync to rtc
         //struct tm *info =  (struct tm *)mbox->getData();
         //Serial.printf("read use data = %d:%d:%d - %d:%d:%d \n", info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
-	GPSLocation gps = gps_location();
-	Serial.printf("lat = %d, long=%d\n", gps.latitude, gps.longitude);
         //TTGOClass *ttgo = TTGOClass::getWatch();
         //ttgo->rtc->setDateTime(info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
       }
@@ -1469,10 +1469,8 @@ void gps_sw_event_cb(uint8_t index, bool en)
   switch (index) {
     case 0:
       if (en) {
-        gps_start();
-        
         if (task != nullptr) {
-          Serial.println("task is runing ...");
+          Serial.println("task is running ...");
           return;
         }
         task = new Task;
@@ -1481,7 +1479,8 @@ void gps_sw_event_cb(uint8_t index, bool en)
         pl = new Preload;
         pl->create();
         pl->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
-	
+
+        gps_start();
       } else {
         gps_stop();
       }
