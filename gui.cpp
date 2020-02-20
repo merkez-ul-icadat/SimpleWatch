@@ -1418,31 +1418,90 @@ static void modules_event_cb()
 /*****************************************************************
             ! GPS EVENT
 */
+
+static void gps_info_mbox_cb(lv_task_t *t)
+{
+  //static  struct tm timeinfo;
+  bool ret = false;
+  static int retry = 0;
+  configTzTime(RTC_TIME_ZONE, "pool.ntp.org");
+  
+  //! del preload
+  delete pl;
+  pl = nullptr;
+
+  char format[256];
+  snprintf(format, sizeof(format), "GPS location is:%d-%d-%d/%d:%d:%d?", 0, 0, 0, 0, 0, 0);
+  //Serial.println(format);
+  delete task;
+  task = nullptr;
+
+  //! mbox
+  static const char *gps_btns[] = {"Ok", ""};
+  mbox = new MBox;
+  mbox->create(format, [](lv_obj_t *obj, lv_event_t event) {
+    if (event == LV_EVENT_VALUE_CHANGED) {
+      const char *txt =  lv_mbox_get_active_btn_text(obj);
+      if (!strcmp(txt, "Ok")) {
+
+        //!sync to rtc
+        //struct tm *info =  (struct tm *)mbox->getData();
+        //Serial.printf("read use data = %d:%d:%d - %d:%d:%d \n", info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
+
+        //TTGOClass *ttgo = TTGOClass::getWatch();
+        //ttgo->rtc->setDateTime(info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
+      }
+      
+      delete mbox;
+      mbox = nullptr;
+      sw->hidden(false);
+    }
+  });
+  mbox->setBtn(gps_btns);
+  //mbox->setData(&timeinfo);
+  return;
+}
+
 void gps_sw_event_cb(uint8_t index, bool en)
 {
   switch (index) {
     case 0:
       if (en) {
-        //Bluetooth(start);
+        //GPS(start);
+        
+        if (task != nullptr) {
+          Serial.println("task is runing ...");
+          return;
+        }
+        task = new Task;
+        task->create(gps_info_mbox_cb);
+        sw->hidden();
+        pl = new Preload;
+        pl->create();
+        pl->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
       } else {
-        //Bluetooth(stop);
+        //GPS(stop);
       }
       break;
     default:
       break;
   }
 }
+
 static void gps_event_cb()
 {
-  Switch::switch_cfg_t cfg[3] = {{"Switch", gps_sw_event_cb}, {"Scan", gps_sw_event_cb}, {"NTP Sync", gps_sw_event_cb}};
+  Switch::switch_cfg_t cfg[1] = {{"Switch", gps_sw_event_cb}};
   sw = new Switch;
-  sw->create(cfg, 3, []() {
+  sw->create(cfg, 1, []() {
     delete sw;
     sw = nullptr;
     menuBars.hidden(false);
   });
   sw->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
 }
+
+
+
 /*****************************************************************
             ! Lora EVENT
 */
