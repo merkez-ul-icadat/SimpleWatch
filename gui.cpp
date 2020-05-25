@@ -1422,11 +1422,6 @@ static void modules_event_cb()
 
 static void gps_info_mbox_cb(lv_task_t *t)
 {
-  //static  struct tm timeinfo;
-  bool ret = false;
-  static int retry = 0;
-  configTzTime(RTC_TIME_ZONE, "pool.ntp.org");
-  
   //! del preload
   delete pl;
   pl = nullptr;
@@ -1447,11 +1442,6 @@ static void gps_info_mbox_cb(lv_task_t *t)
       const char *txt =  lv_mbox_get_active_btn_text(obj);
       if (!strcmp(txt, "Ok")) {
 
-        //!sync to rtc
-        //struct tm *info =  (struct tm *)mbox->getData();
-        //Serial.printf("read use data = %d:%d:%d - %d:%d:%d \n", info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
-        //TTGOClass *ttgo = TTGOClass::getWatch();
-        //ttgo->rtc->setDateTime(info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
       }
       
       delete mbox;
@@ -1460,8 +1450,6 @@ static void gps_info_mbox_cb(lv_task_t *t)
     }
   });
   mbox->setBtn(gps_btns);
-  //mbox->setData(&timeinfo);
-  return;
 }
 
 void gps_sw_event_cb(uint8_t index, bool en)
@@ -1473,6 +1461,7 @@ void gps_sw_event_cb(uint8_t index, bool en)
           Serial.println("task is running ...");
           return;
         }
+        gps_start();
         task = new Task;
         task->create(gps_info_mbox_cb);
         sw->hidden();
@@ -1480,7 +1469,6 @@ void gps_sw_event_cb(uint8_t index, bool en)
         pl->create();
         pl->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
 
-        gps_start();
       } else {
         gps_stop();
       }

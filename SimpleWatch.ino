@@ -125,8 +125,8 @@ void setup()
   // Turn off unused power
   ttgo->power->setPowerOutPut(AXP202_EXTEN, AXP202_OFF);
   ttgo->power->setPowerOutPut(AXP202_DCDC2, AXP202_OFF);
-  ttgo->power->setPowerOutPut(AXP202_LDO3, AXP202_OFF);
-  ttgo->power->setPowerOutPut(AXP202_LDO4, AXP202_OFF);
+  ttgo->power->setPowerOutPut(AXP202_LDO3, AXP202_OFF); //s7xg power
+  ttgo->power->setPowerOutPut(AXP202_LDO4, AXP202_OFF); //s7xg power
 
   //Initialize lvgl
   ttgo->lvgl_begin();
@@ -294,6 +294,7 @@ void loop()
   if (lv_disp_get_inactive_time(NULL) < DEFAULT_SCREEN_TIMEOUT) {
     lv_task_handler();
   } else {
+    Serial.println("Deep sleep ...");
     low_energy();
   }
 }

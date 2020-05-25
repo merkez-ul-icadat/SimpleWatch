@@ -13,8 +13,6 @@ void gps_start()
 
   if ( ! gps_ever_enabled) {
     ttgo = TTGOClass::getWatch();
-    ttgo->begin();
-    ttgo->openBL();
   
     //! Open s7xg power
     ttgo->enableLDO4();
@@ -50,6 +48,7 @@ void gps_start()
     
     ttgo->gps_begin();
     Serial.println("GPS began!");
+    gps_ever_enabled = true;
   }
 }
 
@@ -72,4 +71,8 @@ GPSLocation gps_location()
 void gps_stop()
 {
   gps_enabled = false;
+  ttgo->power->setPowerOutPut(AXP202_LDO3, AXP202_OFF); //s7xg power
+  ttgo->power->setPowerOutPut(AXP202_LDO4, AXP202_OFF); //s7xg power
+  s7xg = nullptr;
+  gps_ever_enabled = false;
 }
