@@ -1,6 +1,7 @@
 # NoobWatch
 [![travis-ci build status](https://travis-ci.org/merkez-ul-icadat/SimpleWatch.svg?branch=master)](https://travis-ci.org/merkez-ul-icadat/SimpleWatch)
-
+[![BCH compliance](https://bettercodehub.com/edge/badge/merkez-ul-icadat/SimpleWatch?branch=master)](https://bettercodehub.com/)
+  
 based on: https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/examples/lvgl/SimpleWatch  
 
 <img src="img/1.png">
