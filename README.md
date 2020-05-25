@@ -15,6 +15,7 @@ based on: https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/exam
 <img src="img/10.jpg">
 <img src="img/11.jpg">
 <img src="img/14.jpg">
+<img src="img/15.jpg">
 
 Examples:  
 <img src="img/LoraWAN-Field-Test-Device1_3.png">
