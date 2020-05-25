@@ -3,7 +3,6 @@
 
 based on: https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/examples/lvgl/SimpleWatch  
 
-<img src="img/LoraWAN-Field-Test-Device1_3.png">
 <img src="img/1.png">
 <img src="img/2.jpg">
 <img src="img/3.jpg">
@@ -15,7 +14,7 @@ based on: https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/exam
 <img src="img/9.jpg">
 <img src="img/10.jpg">
 <img src="img/11.jpg">
-<img src="img/12.jpg">
-<img src="img/13.jpg">
 <img src="img/14.jpg">
-<img src="img/15.jpg">
+
+Examples:  
+<img src="img/LoraWAN-Field-Test-Device1_3.png">
