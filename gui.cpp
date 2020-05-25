@@ -15,6 +15,7 @@
 #include <Ticker.h>
 #include "FS.h"
 #include "SD.h"
+#include "lora.h"
 
 #define RTC_TIME_ZONE   "CET+1"
 
@@ -1451,9 +1452,9 @@ void lora_sw_event_cb(uint8_t index, bool en)
   switch (index) {
     case 0:
       if (en) {
-        //LoRa(start);
+    	lora_start();
       } else {
-        //LoRa(stop);
+    	lora_stop();
       }
       break;
     default:
@@ -1462,7 +1463,7 @@ void lora_sw_event_cb(uint8_t index, bool en)
 }
 static void lora_event_cb()
 {
-  Switch::switch_cfg_t cfg[3] = {{"Switch", lora_sw_event_cb}, {"Scan", lora_sw_event_cb}, {"NTP Sync", lora_sw_event_cb}};
+  Switch::switch_cfg_t cfg[3] = {{"LoRa 1", lora_sw_event_cb}, {"LoRa 2", lora_sw_event_cb}, {"LoRa 3", lora_sw_event_cb}};
   sw = new Switch;
   sw->create(cfg, 3, []() {
     delete sw;

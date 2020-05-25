@@ -125,8 +125,8 @@ void setup()
   // Turn off unused power
   ttgo->power->setPowerOutPut(AXP202_EXTEN, AXP202_OFF);
   ttgo->power->setPowerOutPut(AXP202_DCDC2, AXP202_OFF);
-  ttgo->power->setPowerOutPut(AXP202_LDO3, AXP202_OFF);
-  ttgo->power->setPowerOutPut(AXP202_LDO4, AXP202_OFF);
+  ttgo->power->setPowerOutPut(AXP202_LDO3, AXP202_OFF);  //! Close s7xg chip power
+  ttgo->power->setPowerOutPut(AXP202_LDO4, AXP202_OFF);  //! Close s7xg gps reset power
 
   //Initialize lvgl
   ttgo->lvgl_begin();
