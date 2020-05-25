@@ -1,4 +1,17 @@
 /*
+   Bismillah ar-Rahmaan ar-Raheem
+
+   Merkez-ul-icadat
+   SimpleWatch
+
+   TTGO by Lilygo T-Watch
+   based on: 10 Oct 2019
+   https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/examples/SimpleWatch
+
+   Moved to new link:
+   https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/master/examples/lvgl/SimpleWatch
+*/
+/*
   Copyright (c) 2019 lewis he
   This is just a demonstration. Most of the functions are not implemented.
   The main implementation is low-power standby.
