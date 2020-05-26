@@ -45,8 +45,6 @@ void gps_start()
     s7xg->gpsSetFormatUplink(1);
     s7xg->gpsSetMode(1);
     Serial.println("GPS manual");
-    
-    ttgo->gps_begin();
     Serial.println("GPS began!");
     gps_ever_enabled = true;
   }
