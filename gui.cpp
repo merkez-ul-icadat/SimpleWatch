@@ -302,13 +302,13 @@ class MenuBar
 };
 
 MenuBar::lv_menu_config_t _cfg[8] = {
+  {.name = "GPS", .img = (void *) &modules, .event_cb = gps_event_cb},
   {.name = "Hackerspace", .img = (void *) &modules, .event_cb = hackerspace_event_cb},
   {.name = "WiFi", .img = (void *) &wifi, .event_cb = wifi_event_cb},
   {.name = "Bluetooth", .img = (void *) &bluetooth, .event_cb = bluetooth_event_cb},
   {.name = "SD Card", .img = (void *) &sd, .event_cb = sd_event_cb},
   {.name = "Setting", .img = (void *) &setting, .event_cb = setting_event_cb},
   {.name = "Modules", .img = (void *) &modules, .event_cb = modules_event_cb},
-  {.name = "GPS", .img = (void *) &modules, .event_cb = gps_event_cb},
   {.name = "LoRa", .img = (void *) &modules, .event_cb = lora_event_cb}
 };
 
@@ -1161,7 +1161,7 @@ static void wifi_sync_mbox_cb(lv_task_t *t)
             ttgo->rtc->setDateTime(info->tm_year + 1900, info->tm_mon + 1, info->tm_mday, info->tm_hour, info->tm_min, info->tm_sec);
           } else if (!strcmp(txt, "Cancle")) {
             //!cancle
-            // Serial.println("Cancle press");
+            Serial.println("Cancle press");
           }
           delete mbox;
           mbox = nullptr;
@@ -1461,20 +1461,20 @@ void gps_sw_event_cb(uint8_t index, bool en)
           Serial.println("task is running ...");
           return;
         }
-        gps_start();
-        task = new Task;
-        task->create(gps_info_mbox_cb);
         sw->hidden();
         pl = new Preload;
         pl->create();
         pl->align(bar.self(), LV_ALIGN_OUT_BOTTOM_MID);
-
-      } else {
+        gps_start();
+        task = new Task;
+        task->create(gps_info_mbox_cb);
+      }
+      else {
         gps_stop();
       }
-      break;
+    break;
     default:
-      break;
+    break;
   }
 }
 
